@@ -1,0 +1,6 @@
+# 插件源码与配置文件必须保持 LF（宿主按 LF 解析）
+*.js   text eol=lf
+*.mjs  text eol=lf
+*.json text eol=lf
+*.yml  text eol=lf
+*.md   text eol=lf

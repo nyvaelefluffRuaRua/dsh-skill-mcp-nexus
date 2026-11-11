@@ -1,0 +1,12 @@
+# 依赖（junction 到上层，不入库）
+node_modules/
+
+# 编辑器/系统垃圾
+.DS_Store
+Thumbs.db
+*.tmp
+
+# 本地状态不在这里（在 $DSH_HOME/skill-mcp-hub/）
+
+# 备份文件：保留最近一份做参照，但历史版本不入库
+*.bak-*

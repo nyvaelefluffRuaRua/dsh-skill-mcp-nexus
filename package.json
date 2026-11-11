@@ -1,0 +1,31 @@
+{
+  "name": "dsh-skill-mcp-hub",
+  "version": "0.1.0",
+  "description": "DSH 面板：在一个界面里统一管理 skill 与 MCP，支持全局与会话两级开关、别名备注、分组、悬停提示与自建 MCP 服务器。",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json",
+    "./lib/tool-gate.js": "./lib/tool-gate.js",
+    "./lib/state.js": "./lib/state.js",
+    "./lib/skills.js": "./lib/skills.js",
+    "./lib/mcp.js": "./lib/mcp.js",
+    "./lib/managed.js": "./lib/managed.js"
+  },
+  "dsh": {
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-sidebar"
+      ]
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "license": "MIT"
+}
