@@ -166,4 +166,4 @@ node manifest-check.mjs   # manifest 合规，13 项
 
 ## License
 
-MIT
+[MIT](./LICENSE) © 2026 奈薇
