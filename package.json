@@ -1,18 +1,17 @@
 {
   "name": "dsh-skill-mcp-hub",
   "version": "0.1.0",
-  "description": "DSH 面板：在一个界面里统一管理 skill 与 MCP，支持全局与会话两级开关、别名备注、分组、悬停提示与自建 MCP 服务器。",
+  "description": "DSH 面板：在一个界面里统一管理 skill 与 MCP，支持全局/工作区/会话三层开关、别名备注、分组、悬停提示与自建 MCP 服务器。",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
     ".": "./lib/index.js",
     "./client": "./lib/client.js",
     "./package.json": "./package.json",
-    "./lib/tool-gate.js": "./lib/tool-gate.js",
-    "./lib/state.js": "./lib/state.js",
-    "./lib/skills.js": "./lib/skills.js",
-    "./lib/mcp.js": "./lib/mcp.js",
-    "./lib/managed.js": "./lib/managed.js"
+    "./lib/*.js": "./lib/*.js"
+  },
+  "engines": {
+    "dsh": ">=0.2.0-rc.1 <0.3.0-0"
   },
   "dsh": {
     "client": {
@@ -27,6 +26,13 @@
       "patch": "./cordis.patch.yml"
     }
   },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "skill",
+    "mcp",
+    "model-context-protocol"
+  ],
   "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.32.2"
