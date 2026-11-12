@@ -1,0 +1,246 @@
+{
+  "version": 1,
+  "skills": {
+    "agency-code-reviewer": {
+      "alias": "1111",
+      "note": "222",
+      "group": "",
+      "globalEnabled": true
+    },
+    "agency-minimal-change-engineer": {
+      "alias": "",
+      "note": "",
+      "group": "",
+      "globalEnabled": true
+    },
+    "codebase-design": {
+      "alias": "",
+      "note": "",
+      "group": "",
+      "globalEnabled": true
+    },
+    "asset-pipeline": {
+      "alias": "",
+      "note": "",
+      "group": "",
+      "globalEnabled": true
+    },
+    "domain-modeling": {
+      "alias": "",
+      "note": "",
+      "group": "",
+      "globalEnabled": true
+    },
+    "fal-assets": {
+      "alias": "",
+      "note": "",
+      "group": "",
+      "globalEnabled": true
+    },
+    "game-automation": {
+      "alias": "",
+      "note": "",
+      "group": "",
+      "globalEnabled": true
+    },
+    "game-recon": {
+      "alias": "",
+      "note": "",
+      "group": "",
+      "globalEnabled": true
+    },
+    "game-research-websearch": {
+      "alias": "",
+      "note": "",
+      "group": "",
+      "globalEnabled": true
+    },
+    "mashup-mods": {
+      "alias": "",
+      "note": "",
+      "group": "",
+      "globalEnabled": true
+    },
+    "mod-any-game": {
+      "alias": "",
+      "note": "",
+      "group": "",
+      "globalEnabled": true
+    },
+    "port-a-mod": {
+      "alias": "",
+      "note": "",
+      "group": "",
+      "globalEnabled": true
+    },
+    "publish-mod": {
+      "alias": "",
+      "note": "",
+      "group": "",
+      "globalEnabled": true
+    },
+    "reverse-engineering": {
+      "alias": "",
+      "note": "",
+      "group": "",
+      "globalEnabled": true
+    },
+    "share-field-notes": {
+      "alias": "",
+      "note": "",
+      "group": "",
+      "globalEnabled": true
+    },
+    "showcase-video": {
+      "alias": "",
+      "note": "",
+      "group": "",
+      "globalEnabled": true
+    },
+    "understand-chat": {
+      "alias": "",
+      "note": "",
+      "group": "",
+      "globalEnabled": true
+    },
+    "understand-diff": {
+      "alias": "",
+      "note": "",
+      "group": "",
+      "globalEnabled": true
+    },
+    "understand-domain": {
+      "alias": "",
+      "note": "",
+      "group": "",
+      "globalEnabled": true
+    },
+    "generative-mcpapps": {
+      "alias": "",
+      "note": "",
+      "group": "",
+      "globalEnabled": true
+    }
+  },
+  "groups": [],
+  "mcp": {
+    "web-search-safe": {
+      "alias": "",
+      "note": "",
+      "globalEnabled": true,
+      "builtin": false
+    },
+    "codegraph": {
+      "alias": "",
+      "note": "",
+      "globalEnabled": true,
+      "builtin": false
+    },
+    "context7": {
+      "alias": "",
+      "note": "",
+      "globalEnabled": true,
+      "builtin": false
+    },
+    "dsh-safety": {
+      "alias": "",
+      "note": "",
+      "globalEnabled": true,
+      "builtin": false
+    },
+    "fetch": {
+      "alias": "",
+      "note": "",
+      "globalEnabled": true,
+      "builtin": false
+    },
+    "github": {
+      "alias": "",
+      "note": "",
+      "globalEnabled": true,
+      "builtin": false
+    },
+    "liblib": {
+      "alias": "",
+      "note": "",
+      "globalEnabled": true,
+      "builtin": false
+    },
+    "snowluma": {
+      "alias": "",
+      "note": "",
+      "globalEnabled": true,
+      "builtin": false
+    },
+    "snowluma-host": {
+      "alias": "",
+      "note": "",
+      "globalEnabled": true,
+      "builtin": false
+    },
+    "sqlite": {
+      "alias": "",
+      "note": "",
+      "globalEnabled": true,
+      "builtin": false
+    },
+    "time": {
+      "alias": "",
+      "note": "",
+      "globalEnabled": true,
+      "builtin": false
+    }
+  },
+  "sessionOverlays": {
+    "ss:session-c5d30c95-66d2-45c0-b004-aed08b427cb5": {
+      "mcp": {
+        "codegraph": "off",
+        "context7": "off",
+        "dsh-safety": "off",
+        "fetch": "off",
+        "github": "off",
+        "liblib": "off",
+        "snowluma": "off",
+        "snowluma-host": "off",
+        "sqlite": "off",
+        "time": "off",
+        "web-search-safe": "off"
+      }
+    },
+    "ss:session-49e420a3-ec60-4580-9c42-838a1f01beaf": {
+      "mcp": {
+        "codegraph": "off",
+        "context7": "off",
+        "fetch": "off",
+        "dsh-safety": "off",
+        "github": "off",
+        "liblib": "off",
+        "snowluma": "off",
+        "snowluma-host": "off",
+        "sqlite": "off",
+        "time": "off",
+        "web-search-safe": "off"
+      }
+    },
+    "ws:C:/Users/Administrator/qq-bridge": {
+      "skills": {
+        "agency-code-reviewer": "off"
+      }
+    },
+    "ws:D:/DSH_Work/aa": {
+      "skills": {
+        "agency-code-reviewer": "off"
+      }
+    },
+    "ws:D:/DSH_Work": {
+      "skills": {
+        "agency-code-reviewer": "off"
+      }
+    },
+    "ws:C:/Users/Administrator/Documents/deepseek-harness/default-workspace": {
+      "skills": {
+        "agency-code-reviewer": "off"
+      }
+    }
+  }
+}
