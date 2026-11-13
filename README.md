@@ -1,4 +1,4 @@
-# dsh-skill-mcp-hub
+# dsh-skill-mcp-nexus
 
 DSH 面板：在一个界面里统一管理 **skill** 与 **MCP**。
 
@@ -21,10 +21,10 @@ DSH 的 skill 和 MCP 分散在几处：`~/.dsh/skills` 下的文件、profile �
 
 ```bash
 # 从 npm
-dsh plugin --profile default add npm:dsh-skill-mcp-hub
+dsh plugin --profile default add npm:dsh-skill-mcp-nexus
 
 # 从 GitHub
-dsh plugin --profile default add github:<owner>/dsh-skill-mcp-hub
+dsh plugin --profile default add github:nyvaelefluffRuaRua/dsh-skill-mcp-nexus
 
 # 从本地目录
 dsh plugin --profile default add <本仓库路径>
@@ -122,7 +122,7 @@ dsh plugin --profile default add <本仓库路径>
 
 ## 配置文件
 
-状态存在 `~/.dsh/skill-mcp-hub/state.json`：
+状态存在 `~/.dsh/skill-mcp-nexus/state.json`：
 
 ```json
 {
@@ -133,6 +133,8 @@ dsh plugin --profile default add <本仓库路径>
   "sessionOverlays": { "ws:<路径>": {...}, "ss:<会话id>": {...} }
 }
 ```
+
+**从旧名 `dsh-skill-mcp-hub` 升级的**：首次运行会把 `~/.dsh/skill-mcp-hub/` 整目录改名到 `skill-mcp-nexus/`，别名、备注、分组、开关全部保留。迁移成功会在 `last-load.json` 里记 `stateMigratedFrom: "skill-mcp-hub"`。
 
 另有一份 `last-load.json`，记录插件上次加载的状态：
 

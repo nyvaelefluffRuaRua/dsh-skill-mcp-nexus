@@ -69,7 +69,7 @@ try {
   check('state 往返保持字段', s1.skills.alpha?.alias === (negative ? 'WRONG' : '甲'), s1.skills.alpha?.alias)
   check('state 保存 globalEnabled=false', s1.skills.alpha?.globalEnabled === false)
   check('state 分组保留', s1.groups.length === 1 && s1.groups[0].name === '组一')
-  check('state 文件落在 skill-mcp-hub/state.json', statePath(home).endsWith(join('skill-mcp-hub', 'state.json')))
+  check('state 文件落在 skill-mcp-nexus/state.json', statePath(home).endsWith(join('skill-mcp-nexus', 'state.json')))
 
   // 损坏文件 → 回落空状态，不抛
   await writeFile(statePath(home), '{ 坏掉的 json', 'utf8')
@@ -333,6 +333,7 @@ if (negative) {
   console.log(fail === 0 ? '全部 PASS' : '有失败项')
   process.exitCode = fail === 0 ? 0 : 1
 }
+
 
 
 

@@ -110,7 +110,7 @@ check('manifest 通过宿主全部校验原语', base.length === (negative ? 99 
 const shape = checkClientShape(HUB_MANIFEST)
 check('客户端 descriptor 形状匹配（id / direct）', shape.length === 0, shape.join(' / ') || 'ok')
 
-check('package 名与插件名一致', HUB_MANIFEST.package === 'dsh-skill-mcp-hub', HUB_MANIFEST.package)
+check('package 名与插件名一致', HUB_MANIFEST.package === 'dsh-skill-mcp-nexus', HUB_MANIFEST.package)
 check('face 是 host', HUB_MANIFEST.face === 'host')
 check('namespace 与 NS 常量一致', (HUB_MANIFEST.invocations[0]?.namespace) === NS, NS)
 check('方法数与宿主类一致（11 个）', HUB_MANIFEST.invocations.length === (negative ? 10 : 11), String(HUB_MANIFEST.invocations.length))
@@ -160,4 +160,5 @@ if (negative) {
   console.log(fail === 0 ? '全部 PASS' : '有失败项')
   process.exitCode = fail === 0 ? 0 : 1
 }
+
 

@@ -1,5 +1,5 @@
 {
-  "name": "dsh-skill-mcp-hub",
+  "name": "dsh-skill-mcp-nexus",
   "version": "0.1.0",
   "description": "DSH 面板：在一个界面里统一管理 skill 与 MCP，支持全局/工作区/会话三层开关、别名备注、分组、悬停提示与自建 MCP 服务器。",
   "type": "module",
@@ -38,3 +38,4 @@
     "@modelcontextprotocol/sdk": "1.32.2"
   }
 }
+
