@@ -166,6 +166,47 @@ node manifest-check.mjs   # manifest 合规，13 项
 
 服务端改 `lib/index.js` 重载插件即可；客户端改 `lib/client.js` **必须重启应用**。
 
+### 代码地图
+
+服务端一切操作的唯一真源是 `state.json`；读盘、求值、执行分在下面这些文件里，各管一件事。
+
+| 文件 | 管什么 |
+|---|---|
+| `lib/index.js` | 宿主半区。Typert 服务 `skillMcpHub`，把下面的模块拼起来对外暴露方法 |
+| `lib/manifest.js` | Typert wire manifest。**网关认识我们方法的唯一凭据**，漏登记 endpoint 就是 404 |
+| `lib/codec.js` | `strictCodec` 构造器，只实现 0.2.x 起的 `create()` 工厂契约 |
+| `lib/state.js` | 状态存储。tmp + rename 原子写；旧目录 `skill-mcp-hub/` 自动 migrate |
+| `lib/layers.js` | 局部层覆盖的**纯函数**（不 import 宿主包，所以能离线自检） |
+| `lib/skills.js` | skill 扫描与启停标记。两种停用姿势（改名法 / frontmatter）并存，判断可用性要两个条件都为假 |
+| `lib/workspace-layer.js` | 工作区层「文件位置即真源」——放合法但禁用的壳，靠宿主 rank 胜过全局 |
+| `lib/skill-shadow.js` | 会话级关闭：包住宿主 `skills.list / snapshot / get` 做结果级过滤 |
+| `lib/mcp.js` | MCP 状态与工具名解析。不写 patch，运行时靠 `tools.restrict` |
+| `lib/managed.js` | 自建 MCP 的受管块（`# >>> dsh-skill-mcp-hub:mcp:begin`），块外逐字节保留 |
+| `lib/probe.js` | MCP 连接测试：独立握手 + 8 秒超时强杀，不借用宿主连接 |
+| `lib/tool-gate.js` | 按 agent 施加工具限制。三件事缺一就会 CPU 100%（重入守卫 / 签名比对 / 监听器独占） |
+| `lib/client.js` | 浏览器半区（面板 + 输入栏浮层），改它必须重启应用 |
+
+**想改什么，动哪里**：
+
+| 需求 | 落点 | 生效方式 |
+|---|---|---|
+| 加一个远程方法 | `lib/manifest.js` 登记 + `lib/index.js` 实现 | 重载插件 |
+| 改开关语义 | `lib/layers.js`（求值）+ `index.js`（执行） | 重载插件 |
+| 改面板 UI / 浮层 | `lib/client.js` | **重启应用** |
+| 改自建 MCP 的写盘格式 | `lib/managed.js` | 重载插件 |
+| 改会话关闭的实现 | `lib/skill-shadow.js` | 重载插件 |
+
+**几条写代码时的硬约束**（踩过的坑，改之前先看）：
+
+1. 调 `skills.list / snapshot / get` 传 `scope` 时必须传 **agent 对象本体**，`chainLayers` 用同引用比较，传 id 或新造对象会静默不生效。
+2. 浏览器包只能 require 外壳种子（react / react/jsx-runtime / ui-primitives），打包格式是 `window.__ModuleLoader__.load({ id, factory })`。
+3. 样式一律用宿主 token（`--dsw-font-*` / `--dsw-radius-*` / `--dsw-alias-*`）；本插件尺寸走 `--hub-*` 令牌集中在 `.HUB_root` 里。**不要写裸 px 字号或编造 token 名**——名字不存在时 `var()` 会整体失效。
+4. grid/flex 里的文本子项必须 `min-width:0`，否则长名字会撑破格子把兄弟列挤成 0 宽。
+5. 悬停浮层 `z-index:200`，输入栏浮层 `z-index:60`——新增浮层要么高过 200，要么明确放它下面。
+6. `state.json` 里 `sessionOverlays` 的 `ws:` 层跨会话共享，**会话销毁只许清 `ss:`**。
+
+**加断言**：`selftest.mjs` 是纯逻辑（不碰宿主包），新逻辑尽量先抽成 `layers.js` 这类纯函数再测；`manifest-check.mjs` 管 manifest 与包元数据一致性。**判断一条断言有没有用**：把对应代码整段删掉，它必须变红。
+
 ### 依赖说明
 
 `@deepseek-ai/dsh-typert-protocol` 只随宿主发布，npm 上的版本对不上。插件加载时会依次尝试裸包名、`<execPath>/node_modules/…`、`<execPath>/resources/app/node_modules/…`，都失败就用一个最小桩类顶上——**插件照常加载，只是面板会 404**，而不是整个插件猝死。原因写进 `last-load.json`。
