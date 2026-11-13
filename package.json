@@ -34,8 +34,18 @@
     "model-context-protocol"
   ],
   "license": "MIT",
+  "author": "奈薇 (nyvaelefluffRuaRua) <https://github.com/nyvaelefluffRuaRua>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nyvaelefluffRuaRua/dsh-skill-mcp-nexus.git"
+  },
+  "homepage": "https://github.com/nyvaelefluffRuaRua/dsh-skill-mcp-nexus#readme",
+  "bugs": {
+    "url": "https://github.com/nyvaelefluffRuaRua/dsh-skill-mcp-nexus/issues"
+  },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "1.32.2"
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "zod": "^4.2.0"
   }
 }
 

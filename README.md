@@ -209,6 +209,8 @@ node manifest-check.mjs   # manifest 合规，13 项
 
 ### 依赖说明
 
+`zod` 在代码里被直接 import（`lib/index.js`、`lib/manifest.js`），已写进 `dependencies`。本机 `node_modules/zod` 是一个指向宿主 profile 的 junction，所以在当前环境里跑的是宿主那份；在干净环境执行 `pnpm install` 会装上自己的副本。
+
 `@deepseek-ai/dsh-typert-protocol` 只随宿主发布，npm 上的版本对不上。插件加载时会依次尝试裸包名、`<execPath>/node_modules/…`、`<execPath>/resources/app/node_modules/…`，都失败就用一个最小桩类顶上——**插件照常加载，只是面板会 404**，而不是整个插件猝死。原因写进 `last-load.json`。
 
 ---
@@ -216,3 +218,5 @@ node manifest-check.mjs   # manifest 合规，13 项
 ## License
 
 [MIT](./LICENSE) © 2026 奈薇
+
+本项目部分代码结构参考了同类插件，其原始版权声明与许可条款见 [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md)。
