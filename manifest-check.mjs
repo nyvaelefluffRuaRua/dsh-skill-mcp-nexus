@@ -9,7 +9,13 @@
  * 用法：node manifest-check.mjs           正向
  *      node manifest-check.mjs negative   注入故障，应有 FAIL
  */
+import { readdirSync, readFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { HUB_MANIFEST, NS } from './lib/manifest.js'
+
+const HERE = dirname(fileURLToPath(import.meta.url))
+const PKG = JSON.parse(readFileSync(join(HERE, 'package.json'), 'utf8'))
 
 const negative = (process.argv[2] ?? 'positive') === 'negative'
 let pass = 0
@@ -111,6 +117,20 @@ const shape = checkClientShape(HUB_MANIFEST)
 check('客户端 descriptor 形状匹配（id / direct）', shape.length === 0, shape.join(' / ') || 'ok')
 
 check('package 名与插件名一致', HUB_MANIFEST.package === 'dsh-skill-mcp-nexus', HUB_MANIFEST.package)
+
+// ── 元信息一致性 + 防回退（2026-11-14 加）──────────────────────────
+// 这两条守的是同一个坑的两面：包名/版本一旦在源码里被硬编码，
+// package.json 抬版本或改名时就会出现「凭据说 0.1.0、包里说 0.1.2」。
+check('package.json 的 name 与 manifest.package 一致', PKG.name === HUB_MANIFEST.package, `${PKG.name} / ${HUB_MANIFEST.package}`)
+
+const libFiles = readdirSync(join(HERE, 'lib')).filter((f) => f.endsWith('.js'))
+const staleId = libFiles.filter((f) => readFileSync(join(HERE, 'lib', f), 'utf8').includes('dsh-skill-mcp-hub#'))
+check('lib 里没有旧包名 id（dsh-skill-mcp-hub#）', staleId.length === 0, staleId.join(', ') || '0 处')
+
+const hardVersion = libFiles
+  .filter((f) => f !== 'version.js')
+  .filter((f) => /version:\s*['"]\d+\.\d+\.\d+['"]/.test(readFileSync(join(HERE, 'lib', f), 'utf8')))
+check('版本号只有 lib/version.js 一个来源', hardVersion.length === 0, hardVersion.join(', ') || '0 处')
 check('face 是 host', HUB_MANIFEST.face === 'host')
 check('namespace 与 NS 常量一致', (HUB_MANIFEST.invocations[0]?.namespace) === NS, NS)
 check('方法数与宿主类一致（11 个）', HUB_MANIFEST.invocations.length === (negative ? 10 : 11), String(HUB_MANIFEST.invocations.length))

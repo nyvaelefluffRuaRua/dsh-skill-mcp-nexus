@@ -32,10 +32,15 @@ dsh plugin --profile default add <本仓库路径>
 
 没有全局 `dsh` 命令的话，用 `npx @deepseek-ai/dsh` 代替 `dsh`。
 
+**从本地目录装要多一步**：那条路走的是 `link:`，pnpm 不会替你装被 link 包自己的 `dependencies`。进仓库根目录补一次 `pnpm install`，否则启动时报 `ERR_MODULE_NOT_FOUND: Cannot find package 'zod'`——报错长得像"包名写错了"，其实是依赖没装。从 npm / GitHub 装是 tarball，依赖由 pnpm 正常解析，不需要这一步。
+
 装完**重启 DSH**。
 
-要求 DSH `>=0.2.0-rc.1 <0.3.0`。
+要求 DSH `>=0.2.0-rc.1 <0.3.0`，Node `>=22.15`（读了 `zlib.zstdDecompressSync`，用来解析会话存档）。
 低于这个版本装不上是有意的——本插件用了 `ctx.typert` 服务，老版本没有它，装了会静默失效。
+
+**首次启动**会在 `$DSH_HOME/skill-mcp-nexus/` 下自建 `state.json` 与 `last-load.json`，不用预先建目录。
+如果 `$DSH_HOME` 下还留着旧版目录 `skill-mcp-hub/`，插件会把它整目录改名成新名（跨盘或文件被占用时不搬，读的时候回退旧路径）。
 
 ---
 
@@ -214,6 +219,33 @@ node manifest-check.mjs   # manifest 合规，13 项
 `@deepseek-ai/dsh-typert-protocol` 只随宿主发布，npm 上的版本对不上，所以**既不进 `dependencies`、也不该出现在 `node_modules` 里**。插件加载时依次尝试裸包名、`<execPath>/node_modules/…`、`<execPath>/resources/app/node_modules/…`，都失败就用一个最小桩类顶上——**插件照常加载，只是面板会 404**，而不是整个插件猝死。原因写进 `last-load.json`，`typertBaseOk: true` 就说明这条路走通了。
 
 **改依赖时注意**：这个目录的 `node_modules` 由 pnpm 一个人管，只同步锁文件请用 `pnpm install --lockfile-only`，别裸跑 `pnpm install` 顺手把锁也改了。2026-11-14 拆掉了两条手工搭的 junction（`zod` → 宿主 profile、`@deepseek-ai/dsh-typert-protocol` → 宿主安装目录），现在顶层只剩 pnpm 自己的软链，干净 clone 后 `pnpm install` 即可复现。
+
+### 为什么代码里还留着 `skill-mcp-hub`
+
+包与仓库在 2026-11-13 改名为 `dsh-skill-mcp-nexus`，但下面这些**内部标识符不能跟着改**——它们已经写进了用户的数据和宿主的配置：
+
+| 标识符 | 出处 | 改了会怎样 |
+| --- | --- | --- |
+| `# >>> dsh-skill-mcp-hub:mcp:begin` / `:end` | `lib/managed.js`，会落到用户的 `cordis.patch.yml` | 旧的受管块认不出来，变成孤儿行 |
+| `dsh-skill-mcp-hub:workspace-shadow` | `lib/workspace-layer.js`，会落到工作区 `SKILL.md` 的 frontmatter | 已标记的壳文件失联，工作区开关失效 |
+| `ui-skill-mcp-hub` / `skill-mcp-hub`（locale NS、面板 id） | `lib/client.js` | 已保存的面板状态和挂载点对不上 |
+| `skill-mcp-hub`（`LEGACY_STATE_DIR`） | `lib/state.js` | 老用户的状态目录迁不过来 |
+
+**该一致的地方**已统一收口：包名与版本只有一个来源（`package.json` → `lib/version.js`），客户端 descriptor 的 `id` 用同一个 `PKG` 常量拼，`last-load.json` 与探活 clientInfo 都读 `PKG_VERSION`。`manifest-check.mjs` 有三条断言盯着别再写死（`package.json` 的 name 对得上 manifest、`lib` 里没有旧包名 `#`、除 `version.js` 外没有版本字面量）。
+
+---
+
+## 版本号沿革
+
+`package.json` 的 `version` 与 git tag 自 `v0.1.2` 起才对齐。此前打了 tag 却没同步包元数据，两个 tag 里的 `package.json` 一律写着 `0.1.0`——**不改写历史提交**，只在此记录事实：
+
+| tag | 提交 | 包内 `version` |
+| --- | --- | --- |
+| `v0.1.0` | `0b7cb6b` | `0.1.0` |
+| `v0.1.1` | `f1dbcd1` | `0.1.0`（错位） |
+| `v0.1.2` | 本版 | `0.1.2`（对齐） |
+
+顺带两件事：`bad-pending` 是个没有语义的临时 tag（指向 `b5ec765`），不要拿它做发布锚点，也别推到远端；`git describe` 显示的 `v0.1.1-3-g<sha>` 只说明"离最近 tag 三个提交"，**不代表包版本**。
 
 ---
 
