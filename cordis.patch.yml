@@ -1,4 +1,4 @@
-# dsh-skill-mcp-hub bundle patch
+# dsh-skill-mcp-nexus bundle patch
 - insert:
-    - id: skill-mcp-hub
-      name: dsh-skill-mcp-hub
+    - id: dsh-skill-mcp-nexus
+      name: dsh-skill-mcp-nexus
