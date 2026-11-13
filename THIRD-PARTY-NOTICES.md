@@ -55,6 +55,8 @@ SOFTWARE.
 | 依赖 | 版本 | 许可证 |
 |---|---|---|
 | `@modelcontextprotocol/sdk` | 1.32.2 | MIT |
-| `zod` | 4.2.0 | MIT |
+| `zod` | 4.6.7（锁文件解析） | MIT |
 
 宿主 `@deepseek-ai/dsh` 亦为 MIT（Copyright (c) 2026 DeepSeek），本项目仅调用其公开插件接口。
+
+`@deepseek-ai/dsh-typert-protocol` 不随本仓库分发，运行时从已安装的宿主里解析；解析不到时用桩类降级，不影响加载。

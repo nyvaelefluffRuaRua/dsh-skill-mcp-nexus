@@ -209,9 +209,11 @@ node manifest-check.mjs   # manifest 合规，13 项
 
 ### 依赖说明
 
-`zod` 在代码里被直接 import（`lib/index.js`、`lib/manifest.js`），已写进 `dependencies`。本机 `node_modules/zod` 是一个指向宿主 profile 的 junction，所以在当前环境里跑的是宿主那份；在干净环境执行 `pnpm install` 会装上自己的副本。
+`zod` 在代码里被直接 import（`lib/index.js`、`lib/manifest.js`），已写进 `dependencies`，由 pnpm 从自己的 `.pnpm` 装副本（锁文件解析到 4.6.7），不指向宿主。
 
-`@deepseek-ai/dsh-typert-protocol` 只随宿主发布，npm 上的版本对不上。插件加载时会依次尝试裸包名、`<execPath>/node_modules/…`、`<execPath>/resources/app/node_modules/…`，都失败就用一个最小桩类顶上——**插件照常加载，只是面板会 404**，而不是整个插件猝死。原因写进 `last-load.json`。
+`@deepseek-ai/dsh-typert-protocol` 只随宿主发布，npm 上的版本对不上，所以**既不进 `dependencies`、也不该出现在 `node_modules` 里**。插件加载时依次尝试裸包名、`<execPath>/node_modules/…`、`<execPath>/resources/app/node_modules/…`，都失败就用一个最小桩类顶上——**插件照常加载，只是面板会 404**，而不是整个插件猝死。原因写进 `last-load.json`，`typertBaseOk: true` 就说明这条路走通了。
+
+**改依赖时注意**：这个目录的 `node_modules` 由 pnpm 一个人管，只同步锁文件请用 `pnpm install --lockfile-only`，别裸跑 `pnpm install` 顺手把锁也改了。2026-11-14 拆掉了两条手工搭的 junction（`zod` → 宿主 profile、`@deepseek-ai/dsh-typert-protocol` → 宿主安装目录），现在顶层只剩 pnpm 自己的软链，干净 clone 后 `pnpm install` 即可复现。
 
 ---
 
